@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-require("../models/User");
+require("../models/user");
 const User = mongoose.model("User");
 
-///GET  /products/
+///GET  /user/
 module.exports.getUser = async (req, res, next) => {
   try {
     const user = await User.find();
@@ -12,10 +12,10 @@ module.exports.getUser = async (req, res, next) => {
   }
 };
 
-///POST  /products/
+///POST  /user/
 module.exports.postUser = async (req, res, next) => {
   try {
-    const { name, email, country, state, county, street, number, cep, cpf, pis } =
+    const { name, email, country, state, city, street, number, cep, cpf, pis } =
       req.body;
 
     if (
@@ -23,7 +23,7 @@ module.exports.postUser = async (req, res, next) => {
       !email ||
       !country ||
       !state ||
-      !county ||
+      !city ||
       !street ||
       !number ||
       !cep ||
@@ -38,7 +38,7 @@ module.exports.postUser = async (req, res, next) => {
       email,
       country,
       state,
-      county,
+      city,
       street,
       number,
       cep,
@@ -47,10 +47,12 @@ module.exports.postUser = async (req, res, next) => {
     };
 
     const user = await User.create(newUser);
-    return res.json(product);
+
+    return res.json(user);
 
     ///TODO Tratar Erro ////////
   } catch (error) {
+    console.log(error);
     return res.json({ error });
   }
 };

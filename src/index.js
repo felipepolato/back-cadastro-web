@@ -2,8 +2,7 @@ require("dotenv/config")
 require("./database/connection")
 const express = require("express");
 const cors = require("cors");
-const productsRouter = require("./router/productsRouter");
-const cartRouter = require("./router/cartRouter");
+const userRouter = require("./router/userRouter");
 
 
 const app = express();
@@ -11,8 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use("/products", productsRouter);
-app.use("/cart", cartRouter);
+app.use("/user", userRouter);
 
 
 const server = app.listen(process.env.PORT || 3003, () => {
