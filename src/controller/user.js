@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 require("../models/user");
 const User = mongoose.model("User");
+const bcrypt = require("bcrypt");
 
 ///GET  /user/
 module.exports.getUser = async (req, res, next) => {
@@ -15,8 +16,19 @@ module.exports.getUser = async (req, res, next) => {
 ///POST  /user/
 module.exports.postUser = async (req, res, next) => {
   try {
-    const { name, email, country, state, city, street, number, cep, cpf, pis } =
-      req.body;
+    const {
+      name,
+      email,
+      country,
+      state,
+      city,
+      street,
+      number,
+      cep,
+      cpf,
+      pis,
+      password,
+    } = req.body;
 
     if (
       !name ||
@@ -28,7 +40,8 @@ module.exports.postUser = async (req, res, next) => {
       !number ||
       !cep ||
       !cpf ||
-      !pis
+      !pis ||
+      !password
     ) {
       throw new Error("Parâmetros Inexistentes!");
     }
@@ -44,6 +57,7 @@ module.exports.postUser = async (req, res, next) => {
       cep,
       cpf,
       pis,
+      password,
     };
 
     const user = await User.create(newUser);
@@ -53,7 +67,35 @@ module.exports.postUser = async (req, res, next) => {
     ///TODO Tratar Erro ////////
   } catch (error) {
     console.log(error);
-    return res.json({ error });
+    return res.status(400).json({ error });
+  }
+};
+
+//POST /authenticate
+module.exports.postAuth = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const newUser = await User.findOne({
+      email,
+    }).select("+passowrd");
+
+    if (!newUser) {
+      throw new Error("Usuário não encontrado!");
+    }
+
+    if (!(await bcrypt.compare(password, newUser.password))) {
+      throw new Error("Senha invalida!");
+    }
+
+    const user = await User.create(newUser);
+
+    return res.json(user);
+
+    ///TODO Tratar Erro ////////
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error });
   }
 };
 
