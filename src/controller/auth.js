@@ -26,7 +26,6 @@ module.exports.postAuth = async (req, res, next) => {
     if (!user) {
       throw new Error("Usuário não encontrado!");
     }
-    console.log(password, user);
     if (!(await bcrypt.compare(password, user.password))) {
       throw new Error("Senha invalida!");
     }
@@ -44,7 +43,6 @@ module.exports.postAuth = async (req, res, next) => {
 
     return res.json({ token, user: responseUser });
   } catch (error) {
-    console.log(error);
     return res.status(400).json({ error: error.message });
   }
 };

@@ -93,7 +93,6 @@ module.exports.putPasswordUser = async (req, res, next) => {
 
     const verifiedPassword = await bcrypt.compare(password, user.password);
     if (!verifiedPassword) {
-      console.log("AQUIIII");
       throw new Error("Senha Incorreta!");
     }
 

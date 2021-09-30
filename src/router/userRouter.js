@@ -14,8 +14,6 @@ function verifyJWT(req, res, next) {
     if (err)
       return res.status(500).json({ auth: false, message: "Token Inválido." });
 
-    console.log(decoded);
-
     // se tudo estiver ok, salva no request para uso posterior
     req.userId = decoded.user._id;
     next();
