@@ -43,8 +43,6 @@ module.exports.postAuth = async (req, res, next) => {
     });
 
     return res.json({ token, user: responseUser });
-
-    ///TODO Tratar Erro ////////
   } catch (error) {
     console.log(error);
     return res.status(400).json({ error: error.message });
