@@ -10,6 +10,6 @@ const { connect } = require("mongoose");
     await connect(process.env.MONGODB_URI, options);
     console.log("Conectado no Banco de Dados");
   } catch (error) {
-    console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 })();
