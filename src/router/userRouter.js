@@ -21,12 +21,15 @@ function verifyJWT(req, res, next) {
     next();
   });
 }
+
 userRouter.post("/authenticate", authController.postAuth);
 userRouter.post("/", userController.postUser);
 
 userRouter.use(verifyJWT);
 
+userRouter.get("/", userController.getUser);
 userRouter.delete("/", userController.deleteUser);
 userRouter.put("/", userController.putUser);
+userRouter.put("/password", userController.putPasswordUser);
 
 module.exports = userRouter;
