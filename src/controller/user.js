@@ -2,16 +2,7 @@ const mongoose = require("mongoose");
 require("../models/user");
 const User = mongoose.model("User");
 const bcrypt = require("bcrypt");
-
-///GET  /user/
-module.exports.getUser = async (req, res, next) => {
-  try {
-    const user = await User.find();
-    return res.status(200).json(user);
-  } catch (error) {
-    return res.status(400).json({ error: error.message });
-  }
-};
+const jwt = require("jsonwebtoken");
 
 ///POST  /user/
 module.exports.postUser = async (req, res, next) => {
@@ -79,6 +70,17 @@ module.exports.postUser = async (req, res, next) => {
     return res.json(user);
 
     ///TODO Tratar Erro ////////
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+///DELETE  /user/
+module.exports.deleteUser = async (req, res, next) => {
+  try {
+    const userId = req.userId
+    User.findByIdAndDelete(userId)
+    res.json("Usuario Deletado")
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
